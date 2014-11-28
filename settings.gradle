@@ -1,0 +1,10 @@
+rootProject.name = 'dropwizard'
+
+include 'project-api'
+
+include 'project-api'
+
+include 'project-client'
+
+include 'project-application'
+
