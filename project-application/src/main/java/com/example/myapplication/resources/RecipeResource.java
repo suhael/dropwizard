@@ -1,33 +1,37 @@
 package com.example.myapplication.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.example.myapplication.api.Person;
-import org.elasticsearch.action.get.GetResponse;
+import com.example.myapplication.api.Recipe;
 import org.elasticsearch.client.Client;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by sakhtar on 27/11/2014.
+ * Created by sakhtar on 22/12/2014.
  */
-@Path("/person")
+@Path("/recipe")
 @Produces(MediaType.APPLICATION_JSON)
-public class PersonResource {
+public class RecipeResource {
 
     private final Client client;
 
-    public PersonResource(Client client){
+    public RecipeResource(Client client){
         this.client = client;
     }
 
     @GET
     @Timed
-    public Person getPerson(){
+    public List<Recipe> getRecipes(){
 
-        try {
+/*        try {
             GetResponse responseGet = client.prepareGet("twitter", "tweet", "1")
                     .setOperationThreaded(false)
                     .execute()
@@ -38,7 +42,16 @@ public class PersonResource {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return new Person(1, "suhael");
+        }*/
+
+        List<Recipe> recipes = new ArrayList<Recipe>();
+        recipes.add(new Recipe("food"));
+
+        return recipes;
+    }
+
+    @POST
+    public Response add(){
+        return Response.created(UriBuilder.fromResource(Recipe.class).build()).build();
     }
 }

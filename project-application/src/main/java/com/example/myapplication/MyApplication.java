@@ -1,8 +1,13 @@
 package com.example.myapplication;
 
-import com.example.myapplication.resources.PersonResource;
+import com.example.myapplication.db.IngredientRepository;
+import com.example.myapplication.health.RecipeHealthCheck;
+import com.example.myapplication.resources.IngredientResource;
+import com.example.myapplication.resources.RecipeResource;
 import com.example.myapplication.services.ElasticSearchManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.elasticsearch.client.Client;
@@ -16,14 +21,30 @@ public class MyApplication extends Application<MyApplicationConfiguration> {
     }
     @Override
     public void initialize(Bootstrap<MyApplicationConfiguration> bootstrap) {
-
+        bootstrap.addBundle(new AssetsBundle("/assets/", "/assets/"));
     }
 
     public void run(MyApplicationConfiguration configuration, Environment environment) {
 
         // Create elasticsearch server
         ElasticSearchManager esManager = new ElasticSearchManager();
-        final PersonResource personResource = new PersonResource(esManager.getClient());
-        environment.jersey().register(personResource);
+        environment.lifecycle().manage(esManager);
+
+        Client client = esManager.getClient();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        IngredientRepository ingredientRepository = new IngredientRepository(client, objectMapper);
+        environment.lifecycle().manage(ingredientRepository);
+
+        final RecipeResource recipeResource = new RecipeResource(esManager.getClient());
+        environment.jersey().register(recipeResource);
+
+
+        final IngredientResource ingredientResource = new IngredientResource(ingredientRepository);
+        environment.jersey().register(ingredientResource);
+
+        final RecipeHealthCheck recipeHealthCheck = new RecipeHealthCheck();
+        environment.healthChecks().register("recipe", recipeHealthCheck);
+
     }
 }
