@@ -10,6 +10,7 @@ import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 import org.elasticsearch.client.Client;
 
 /**
@@ -21,6 +22,7 @@ public class MyApplication extends Application<MyApplicationConfiguration> {
     }
     @Override
     public void initialize(Bootstrap<MyApplicationConfiguration> bootstrap) {
+        bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new AssetsBundle("/assets/", "/assets/"));
     }
 
@@ -45,6 +47,8 @@ public class MyApplication extends Application<MyApplicationConfiguration> {
 
         final RecipeHealthCheck recipeHealthCheck = new RecipeHealthCheck();
         environment.healthChecks().register("recipe", recipeHealthCheck);
+
+        environment.jersey().setUrlPattern("/api/*");
 
     }
 }

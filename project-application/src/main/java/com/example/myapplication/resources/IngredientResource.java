@@ -3,6 +3,7 @@ package com.example.myapplication.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.example.myapplication.api.Ingredient;
 import com.example.myapplication.db.IngredientRepository;
+import com.example.myapplication.views.IngredientView;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by sakhtar on 23/12/2014.
  */
 @Path("/ingredient")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(MediaType.TEXT_HTML)
 public class IngredientResource {
 
     private final IngredientRepository repository;
@@ -27,8 +28,11 @@ public class IngredientResource {
 
     @GET
     @Timed
-    public List<Ingredient> getIngredients(){
-        return repository.getIngredients();
+    public IngredientView getIngredients(){
+        //return repository.getIngredients();
+
+        Ingredient ingredient = new Ingredient("blbl");
+        return new IngredientView(ingredient);
     }
 
     @POST
