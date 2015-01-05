@@ -10,10 +10,16 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.FilteredQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
@@ -56,7 +62,7 @@ public class IngredientRepository extends EsRepository implements Managed {
                 .startObject()
                 .startObject(TYPE_NAME)
                 .startObject("properties")
-                .startObject("created").field("type", "date").endObject()
+                .startObject("created").field("type", "date").field("format", "date").endObject()
                 .endObject()
                 .endObject()
                 .endObject();
@@ -72,6 +78,25 @@ public class IngredientRepository extends EsRepository implements Managed {
 
     public List<Ingredient> getIngredients() {
         SearchResponse response = getClient().prepareSearch().setIndices(INDEX_NAME).setTypes(TYPE_NAME).execute().actionGet();
+        SearchHits hits = response.getHits();
+        List<Ingredient> ingredients = new ArrayList<Ingredient>();
+        for(SearchHit hit : hits){
+            try {
+                Ingredient ingredient = (Ingredient) toObject(hit.getSourceAsString(), Ingredient.class);
+                ingredients.add(ingredient);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return ingredients;
+    }
+
+    public List<Ingredient> getIngredientsByDate() throws ParseException {
+
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2015-01-05");
+        System.out.println("date is " + date.toString());
+        FilteredQueryBuilder qb = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(), FilterBuilders.andFilter(FilterBuilders.rangeFilter("created").from(new SimpleDateFormat("yyyy-MM-dd").format(date)).to(new SimpleDateFormat("yyyy-MM-dd").format(date))));
+        SearchResponse response = getClient().prepareSearch().setIndices(INDEX_NAME).setTypes(TYPE_NAME).setQuery(qb).execute().actionGet();
         SearchHits hits = response.getHits();
         List<Ingredient> ingredients = new ArrayList<Ingredient>();
         for(SearchHit hit : hits){
