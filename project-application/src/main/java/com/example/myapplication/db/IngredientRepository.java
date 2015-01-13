@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.lifecycle.Managed;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -16,6 +17,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,14 +70,6 @@ public class IngredientRepository extends EsRepository implements Managed {
                 .endObject();
     }
 
-    public void saveIngredient(Ingredient ingredient){
-        try {
-            IndexResponse response = prepareIndex(INDEX_NAME, TYPE_NAME).setSource(toJson(ingredient)).execute().actionGet();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    }
-
     public List<Ingredient> getIngredients() {
         SearchResponse response = getClient().prepareSearch().setIndices(INDEX_NAME).setTypes(TYPE_NAME).execute().actionGet();
         SearchHits hits = response.getHits();
@@ -91,22 +85,38 @@ public class IngredientRepository extends EsRepository implements Managed {
         return ingredients;
     }
 
-    public List<Ingredient> getIngredientsByDate() throws ParseException {
+    public void saveIngredient(Ingredient ingredient){
+        try {
+            IndexResponse response = prepareIndex(INDEX_NAME, TYPE_NAME).setSource(toJson(ingredient)).execute().actionGet();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2015-01-05");
-        System.out.println("date is " + date.toString());
-        FilteredQueryBuilder qb = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(), FilterBuilders.andFilter(FilterBuilders.rangeFilter("created").from(new SimpleDateFormat("yyyy-MM-dd").format(date)).to(new SimpleDateFormat("yyyy-MM-dd").format(date))));
-        SearchResponse response = getClient().prepareSearch().setIndices(INDEX_NAME).setTypes(TYPE_NAME).setQuery(qb).execute().actionGet();
-        SearchHits hits = response.getHits();
-        List<Ingredient> ingredients = new ArrayList<Ingredient>();
-        for(SearchHit hit : hits){
+    public Ingredient getIngredient(String id){
+        GetResponse response = prepareGet(INDEX_NAME, TYPE_NAME, id).execute().actionGet();
+        if (response.isExists()) {
             try {
-                Ingredient ingredient = (Ingredient) toObject(hit.getSourceAsString(), Ingredient.class);
-                ingredients.add(ingredient);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                return  (Ingredient) toObject(response.getSourceAsString(), Ingredient.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
-        return ingredients;
+        return null;
     }
+
+    public void updateIngredient(String id, Ingredient ingredient){
+        try {
+            prepareUpdate(INDEX_NAME, TYPE_NAME, id).setDoc(toJson(ingredient)).execute().actionGet();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteIngredient(String id){
+        prepareDelete(INDEX_NAME, TYPE_NAME, id).execute().actionGet();
+    }
+
 }

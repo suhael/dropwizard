@@ -1,5 +1,6 @@
 package com.example.myapplication.api;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,16 +9,15 @@ import java.util.Date;
  */
 public class Ingredient implements Serializable{
 
+    @NotNull
     private String title;
-    private Date created;
 
     public Ingredient(){
 
     }
 
-    public Ingredient(String title, Date created){
+    public Ingredient(String title){
         this.title = title;
-        this.created = created;
     }
 
     public String getTitle() {
@@ -26,13 +26,5 @@ public class Ingredient implements Serializable{
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
     }
 }

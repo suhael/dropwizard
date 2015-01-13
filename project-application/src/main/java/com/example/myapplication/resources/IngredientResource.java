@@ -3,14 +3,12 @@ package com.example.myapplication.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.example.myapplication.api.Ingredient;
 import com.example.myapplication.db.IngredientRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.validation.Valid;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,9 +16,11 @@ import java.util.List;
  */
 @Path("/ingredient")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class IngredientResource {
 
     private final IngredientRepository repository;
+    final static Logger logger = LoggerFactory.getLogger(IngredientResource.class);
 
     public IngredientResource(IngredientRepository repository){
         this.repository = repository;
@@ -28,22 +28,31 @@ public class IngredientResource {
 
     @GET
     @Timed
-    public List<Ingredient> getIngredients() throws ParseException {
-        return repository.getIngredientsByDate();
-
-/*        Ingredient ingredient = new Ingredient("blbl", new Date());
-        return new IngredientView(ingredient);*/
+    public List<Ingredient> getIngredients() {
+        return repository.getIngredients();
     }
 
     @POST
-    public void saveIngredient(){
-        Ingredient ingredient = new Ingredient("tomato", new Date());
+    public void saveIngredient(@Valid Ingredient ingredient){
         repository.saveIngredient(ingredient);
-        Ingredient ingredient2 = new Ingredient("pepper", new Date());
-        repository.saveIngredient(ingredient2);
-        Ingredient ingredient3 = new Ingredient("mushroom", new Date());
-        repository.saveIngredient(ingredient3);
-        Ingredient ingredient4 = new Ingredient("sweetcorn", new Date());
-        repository.saveIngredient(ingredient4);
+    }
+
+    @GET
+    @Timed
+    @Path("/{id}")
+    public Ingredient getIngredient(@PathParam("id") String id){
+        return repository.getIngredient(id);
+    }
+
+    @PUT
+    @Path("/{id}")
+    public void updateIngredient(@PathParam("id") String id, @Valid Ingredient ingredient){
+        repository.updateIngredient(id, ingredient);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public void deleteIngredient(@PathParam("id") String id){
+        repository.deleteIngredient(id);
     }
 }
