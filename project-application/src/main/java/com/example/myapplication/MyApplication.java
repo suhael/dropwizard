@@ -25,6 +25,7 @@ public class MyApplication extends Application<MyApplicationConfiguration> {
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new AssetsBundle("/assets/", "/", "index.html"));
         bootstrap.addBundle(new AssetsBundle("/guthub/", "/guthub/", "index.html"));
+        bootstrap.addBundle(new AssetsBundle("/cookbook/", "/cookbook/", "index.html"));
     }
 
     public void run(MyApplicationConfiguration configuration, Environment environment) {

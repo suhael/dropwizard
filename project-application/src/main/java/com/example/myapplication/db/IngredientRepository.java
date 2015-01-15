@@ -16,6 +16,8 @@ import org.elasticsearch.index.query.FilteredQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -31,6 +33,7 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
  */
 public class IngredientRepository extends EsRepository implements Managed {
 
+    final static Logger logger = LoggerFactory.getLogger(IngredientRepository.class);
     private static final String INDEX_NAME = "cookbook";
     private static final String TYPE_NAME = "ingredient";
 
@@ -79,7 +82,7 @@ public class IngredientRepository extends EsRepository implements Managed {
                 Ingredient ingredient = (Ingredient) toObject(hit.getSourceAsString(), Ingredient.class);
                 ingredients.add(ingredient);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                logger.error("Error getting ingredients: {}", ex.getMessage());
             }
         }
         return ingredients;
@@ -89,7 +92,7 @@ public class IngredientRepository extends EsRepository implements Managed {
         try {
             IndexResponse response = prepareIndex(INDEX_NAME, TYPE_NAME).setSource(toJson(ingredient)).execute().actionGet();
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("Error converting object to json: {}", e.getMessage());
         }
     }
 
@@ -111,7 +114,7 @@ public class IngredientRepository extends EsRepository implements Managed {
         try {
             prepareUpdate(INDEX_NAME, TYPE_NAME, id).setDoc(toJson(ingredient)).execute().actionGet();
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("Error converting object to json: {}", e.getMessage());
         }
     }
 
