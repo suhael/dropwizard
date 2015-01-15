@@ -23,9 +23,9 @@ public class MyApplication extends Application<MyApplicationConfiguration> {
     @Override
     public void initialize(Bootstrap<MyApplicationConfiguration> bootstrap) {
         bootstrap.addBundle(new ViewBundle());
-        bootstrap.addBundle(new AssetsBundle("/assets/", "/assets/", "index.html"));
-        bootstrap.addBundle(new AssetsBundle("/guthub/", "/guthub/", "index.html"));
-        bootstrap.addBundle(new AssetsBundle("/cookbook/", "/cookbook/", "index.html"));
+        bootstrap.addBundle(new AssetsBundle("/assets/", "/assets/", "index.html", "assets"));
+        bootstrap.addBundle(new AssetsBundle("/guthub/", "/guthub/", "index.html", "guthub"));
+        bootstrap.addBundle(new AssetsBundle("/cookbook/", "/cookbook/", "index.html", "cookbook"));
     }
 
     public void run(MyApplicationConfiguration configuration, Environment environment) {
