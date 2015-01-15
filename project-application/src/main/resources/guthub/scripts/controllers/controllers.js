@@ -32,8 +32,16 @@ app.config(['$routeProvider', function($routeProvider) {
       }).when('/new', {
         controller: 'NewCtrl',
         templateUrl:'/guthub/views/recipeForm.html'
-      }).otherwise({redirectTo:'/'});
+      }).when('/test', {
+          controller: 'TestCtrl',
+          templateUrl:'/guthub/views/test.html'
+        }).otherwise({redirectTo:'/'});
 }]);
+
+app.controller('TestCtrl', ['$scope', '$location', 'Recipe',
+  function($scope, $location, Recipe) {
+    console.log("testing");
+  }]);
 
 app.controller('ListCtrl', ['$scope', 'recipes',
     function($scope, recipes) {
