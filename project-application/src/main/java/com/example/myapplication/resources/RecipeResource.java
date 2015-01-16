@@ -2,16 +2,13 @@ package com.example.myapplication.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.example.myapplication.api.Recipe;
-import org.elasticsearch.client.Client;
+import com.example.myapplication.db.RecipeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.validation.Valid;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,39 +16,44 @@ import java.util.List;
  */
 @Path("/recipe")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class RecipeResource {
 
-    private final Client client;
+    private final RecipeRepository repository;
+    final static Logger logger = LoggerFactory.getLogger(RecipeResource.class);
 
-    public RecipeResource(Client client){
-        this.client = client;
+    public RecipeResource(RecipeRepository repository){
+        this.repository = repository;
     }
 
     @GET
     @Timed
-    public List<Recipe> getRecipes(){
-
-/*        try {
-            GetResponse responseGet = client.prepareGet("twitter", "tweet", "1")
-                    .setOperationThreaded(false)
-                    .execute()
-                    .actionGet();
-
-            System.out.println(responseGet.getSourceAsString());
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-        List<Recipe> recipes = new ArrayList<Recipe>();
-        recipes.add(new Recipe("food"));
-
-        return recipes;
+    public List<Recipe> getIngredients() {
+        return repository.getRecipes();
     }
 
     @POST
-    public Response add(){
-        return Response.created(UriBuilder.fromResource(Recipe.class).build()).build();
+    public void saveIngredient(@Valid Recipe recipe){
+        repository.saveRecipe(recipe);
+    }
+
+    @GET
+    @Timed
+    @Path("/{id}")
+    public Recipe getRecipe(@PathParam("id") String id){
+        return repository.getRecipe(id);
+    }
+
+
+    @PUT
+    @Path("/{id}")
+    public void updateRecipe(@PathParam("id") String id, @Valid Recipe recipe){
+        repository.updateRecipe(id, recipe);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public void deleteRecipe(@PathParam("id") String id){
+        repository.deleteRecipe(id);
     }
 }

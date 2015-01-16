@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import com.example.myapplication.db.IngredientRepository;
+import com.example.myapplication.db.RecipeRepository;
 import com.example.myapplication.health.RecipeHealthCheck;
 import com.example.myapplication.resources.IngredientResource;
 import com.example.myapplication.resources.RecipeResource;
@@ -40,7 +41,10 @@ public class MyApplication extends Application<MyApplicationConfiguration> {
         IngredientRepository ingredientRepository = new IngredientRepository(client, objectMapper);
         environment.lifecycle().manage(ingredientRepository);
 
-        final RecipeResource recipeResource = new RecipeResource(esManager.getClient());
+        RecipeRepository recipeRepository = new RecipeRepository(client, objectMapper);
+        environment.lifecycle().manage(recipeRepository);
+
+        final RecipeResource recipeResource = new RecipeResource(recipeRepository);
         environment.jersey().register(recipeResource);
 
 
