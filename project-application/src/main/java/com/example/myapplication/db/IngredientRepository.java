@@ -66,6 +66,7 @@ public class IngredientRepository extends EsRepository implements Managed {
         return jsonBuilder().prettyPrint()
                 .startObject()
                 .startObject(TYPE_NAME)
+                //.startObject("_id").field("path", "my_id").endObject()
                 .startObject("properties")
                 .startObject("created").field("type", "date").field("format", "date").endObject()
                 .endObject()
@@ -80,6 +81,7 @@ public class IngredientRepository extends EsRepository implements Managed {
         for(SearchHit hit : hits){
             try {
                 Ingredient ingredient = (Ingredient) toObject(hit.getSourceAsString(), Ingredient.class);
+                ingredient.setId(hit.getId());
                 ingredients.add(ingredient);
             } catch (Exception ex) {
                 logger.error("Error getting ingredients: {}", ex.getMessage());

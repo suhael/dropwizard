@@ -2,8 +2,9 @@
 <html   lang="en" ng-app="cookbook">
 <head>
   <title>GutHub - Create and Share</title>
-  <script src="scripts/vendor/angular.min.js"></script>
-  <script src="scripts/vendor/angular-resource.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.js"></script>
   <script src="scripts/directives/directives.js"></script>
   <script src="scripts/services/services.js"></script>
   <script src="scripts/controllers/controllers.js"></script>
@@ -19,7 +20,9 @@
     <div class="row-fluid">
       <div class="span2">
         <!--Sidebar-->
-        <div id="focus"><a href="/cookbook/#/test">Test</a></div>
+        <div><a href="/cookbook/#/test">Test</a></div>
+        <div><a href="/cookbook/#/ingredient">Ingredient List</a></div>
+        <div><a href="/cookbook/#/ingredient/create">Add Ingredient</a></div>
         <div><a href="/cookbook/#/">Recipe List</a></div>
 
       </div>

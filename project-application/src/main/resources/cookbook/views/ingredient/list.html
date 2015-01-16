@@ -1,0 +1,6 @@
+<div>ingredients</div>
+<ul class="ingredients">
+    <li ng-repeat="ingredient in ingredients">
+        <div><a ng-href="/cookbook/#/ingredient/{{ingredient.id}}">{{ingredient.title}}</a> <button type="button" ng-click="remove()" class="btn">Delete</button></div>
+    </li>
+</ul>

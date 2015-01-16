@@ -2,12 +2,13 @@ package com.example.myapplication.api;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by sakhtar on 23/12/2014.
  */
 public class Ingredient implements Serializable{
+
+    private String id;
 
     @NotNull
     private String title;
@@ -26,5 +27,13 @@ public class Ingredient implements Serializable{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
