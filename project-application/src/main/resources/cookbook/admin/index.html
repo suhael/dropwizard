@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html   lang="en" ng-app="ingredient">
+<html   lang="en" ng-app="admin">
 <head>
     <title>GutHub - Create and Share</title>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.js"></script>
-    <script src="/cookbook/scripts/directives/ingredientDirectives.js"></script>
+    <script src="/cookbook/scripts/directives/directives.js"></script>
     <script src="/cookbook/scripts/services/ingredientServices.js"></script>
+    <script src="/cookbook/scripts/services/mealTimeServices.js"></script>
+    <script src="/cookbook/scripts/services/tagServices.js"></script>
+    <script src="/cookbook/scripts/controllers/admin.js"></script>
     <script src="/cookbook/scripts/controllers/ingredientControllers.js"></script>
+    <script src="/cookbook/scripts/controllers/tagControllers.js"></script>
+    <script src="/cookbook/scripts/controllers/mealTimeControllers.js"></script>
     <link href="/cookbook/styles/bootstrap.css" rel="stylesheet">
     <link href="/cookbook/styles/guthub.css" rel="stylesheet">
 </head>
@@ -20,8 +25,11 @@
     <div class="row-fluid">
         <div class="span2">
             <!--Sidebar-->
-            <div><a href="/cookbook/admin/ingredient/#/">List</a></div>
-            <div><a href="/cookbook/admin/ingredient/#/create">Create</a></div>
+            <div><a href="/cookbook/#/test">Test</a></div>
+            <div><a href="/cookbook/#/ingredient">Ingredient List</a></div>
+            <div><a href="/cookbook/#/ingredient/create">Add Ingredient</a></div>
+            <div><a href="/cookbook/#/recipe">Recipe List</a></div>
+            <div><a href="/cookbook/#/recipe/create">Add Recipe</a></div>
 
         </div>
         <div class="span10">

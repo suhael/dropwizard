@@ -1,11 +1,8 @@
 'use strict';
 
-var app = angular.module('tag',
-    ['ngRoute', 'tag.directives', 'tag.services']);
-
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
-        when('/', {
+        when('/tag', {
             controller: 'TagListCtrl',
             resolve: {
                 tags: ["MultiTagLoader", function(MultiTagLoader) {
@@ -14,7 +11,7 @@ app.config(['$routeProvider', function($routeProvider) {
             },
             templateUrl:'/cookbook/views/tag/list.html'
         })
-        .when('/create', {
+        .when('/tag/create', {
             controller: 'NewTagCtrl',
             templateUrl:'/cookbook/views/tag/add.html'
         })

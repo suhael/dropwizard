@@ -1,11 +1,8 @@
 'use strict';
 
-var app = angular.module('mealtime',
-    ['ngRoute', 'mealtime.directives', 'mealtime.services']);
-
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
-        when('/', {
+        when('/mealtime', {
             controller: 'MealTimeListCtrl',
             resolve: {
                 mealtimes: ["MultiMealTimeLoader", function(MultiMealTimeLoader) {
@@ -14,7 +11,7 @@ app.config(['$routeProvider', function($routeProvider) {
             },
             templateUrl:'/cookbook/views/mealtime/list.html'
         })
-        .when('/create', {
+        .when('/mealtime/create', {
             controller: 'NewMealTimeCtrl',
             templateUrl:'/cookbook/views/mealtime/add.html'
         })

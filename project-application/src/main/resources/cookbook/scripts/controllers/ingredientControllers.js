@@ -1,11 +1,8 @@
 'use strict';
 
-var app = angular.module('ingredient',
-    ['ngRoute', 'ingredient.directives', 'ingredient.services']);
-
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-        .when('/', {
+        .when('/ingredient', {
             controller: 'IngredientListCtrl',
             resolve: {
                 ingredients: ["MultiIngredientLoader", function(MultiIngredientLoader) {
@@ -14,11 +11,11 @@ app.config(['$routeProvider', function($routeProvider) {
             },
             templateUrl:'/cookbook/views/ingredient/list.html'
         })
-        .when('/create', {
+        .when('/ingredient/create', {
             controller: 'NewIngredientCtrl',
             templateUrl:'/cookbook/views/ingredient/add.html'
         })
-        .when('/:ingredientId', {
+        .when('/ingredient/:ingredientId', {
             controller: 'ViewIngredientCtrl',
             resolve: {
                 ingredient: ["IngredientLoader", function(IngredientLoader) {
