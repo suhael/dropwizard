@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html   lang="en" ng-app="mealtime">
+<head>
+    <title>GutHub - Create and Share</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.js"></script>
+    <script src="/cookbook/scripts/directives/mealTimeDirectives.js"></script>
+    <script src="/cookbook/scripts/services/mealTimeServices.js"></script>
+    <script src="/cookbook/scripts/controllers/mealTimeControllers.js"></script>
+    <link href="/cookbook/styles/bootstrap.css" rel="stylesheet">
+    <link href="/cookbook/styles/guthub.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <h1>cookbook</h1>
+</header>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar-->
+            <div><a href="/cookbook/admin/mealtime/#/">List</a></div>
+            <div><a href="/cookbook/admin/mealtime/#/create">Create</a></div>
+
+        </div>
+        <div class="span10">
+            <div ng-view></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
