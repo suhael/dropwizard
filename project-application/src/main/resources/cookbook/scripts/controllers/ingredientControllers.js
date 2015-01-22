@@ -1,32 +1,5 @@
 'use strict';
 
-app.config(['$routeProvider', function($routeProvider) {
-    $routeProvider
-        .when('/ingredient', {
-            controller: 'IngredientListCtrl',
-            resolve: {
-                ingredients: ["MultiIngredientLoader", function(MultiIngredientLoader) {
-                    return MultiIngredientLoader();
-                }]
-            },
-            templateUrl:'/cookbook/views/ingredient/list.html'
-        })
-        .when('/ingredient/create', {
-            controller: 'NewIngredientCtrl',
-            templateUrl:'/cookbook/views/ingredient/add.html'
-        })
-        .when('/ingredient/:ingredientId', {
-            controller: 'ViewIngredientCtrl',
-            resolve: {
-                ingredient: ["IngredientLoader", function(IngredientLoader) {
-                    return IngredientLoader();
-                }]
-            },
-            templateUrl:'/cookbook/views/ingredient/view.html'
-        })
-        .otherwise({redirectTo:'/'});
-}]);
-
 app.controller('IngredientListCtrl', ['$scope', '$location', 'ingredients',
     function($scope, $location, ingredients) {
         $scope.ingredients = ingredients;

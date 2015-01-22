@@ -20,3 +20,17 @@ tagServices.factory('MultiTagLoader', ['Tag', '$q',
             return delay.promise;
         };
     }]);
+
+tagServices.factory('TagLoader', ['Tag', '$route', '$q',
+    function(Tag, $route, $q) {
+        return function() {
+            var delay = $q.defer();
+            Tag.get({id: $route.current.params.tagId}, function(tag) {
+                delay.resolve(tag);
+            }, function() {
+                delay.reject('Unable to fetch tag '  + $route.current.params.tagId);
+            });
+            return delay.promise;
+        };
+    }
+]);
