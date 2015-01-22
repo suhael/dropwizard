@@ -2,3 +2,13 @@ Add
 
 <input ng-model="recipe.title" class="input-xlarge" id="title">
 <button class="btn btn-primary" type="button" ng-click="save()">Save</button>
+
+<label ng-repeat="mealtime in mealtimes">
+    <input type="checkbox" ng-model="mealtime"/> {{mealtime.title}}
+</label>
+
+<ul>
+    <li ng-repeat="tag in tags">
+        <div>{{tag.title}}</div>
+    </li>
+</ul>

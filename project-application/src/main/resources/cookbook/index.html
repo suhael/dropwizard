@@ -7,6 +7,9 @@
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.js"></script>
   <script src="/cookbook/scripts/directives/directives.js"></script>
   <script src="/cookbook/scripts/services/recipeServices.js"></script>
+  <script src="/cookbook/scripts/services/tagServices.js"></script>
+  <script src="/cookbook/scripts/services/mealTimeServices.js"></script>
+  <script src="/cookbook/scripts/services/ingredientServices.js"></script>
   <script src="/cookbook/scripts/controllers/main.js"></script>
   <script src="/cookbook/scripts/controllers/recipeControllers.js"></script>
   <link href="/cookbook/styles/bootstrap.css" rel="stylesheet">
@@ -23,7 +26,6 @@
         <!--Sidebar-->
         <div><a href="/cookbook/#/recipe">Recipe List</a></div>
         <div><a href="/cookbook/#/recipe/create">Add Recipe</a></div>
-
       </div>
       <div class="span10">
         <div ng-view></div>

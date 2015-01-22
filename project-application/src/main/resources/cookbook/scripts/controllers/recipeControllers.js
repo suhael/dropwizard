@@ -13,11 +13,15 @@ app.controller('RecipeListCtrl', ['$scope', '$location', 'recipes',
     }
 ]);
 
-app.controller('NewRecipeCtrl', ['$scope', '$location', 'Recipe',
-    function($scope, $location, Recipe) {
+app.controller('NewRecipeCtrl', ['$scope', '$location', 'Recipe', 'ingredients', 'tags', 'mealtimes',
+    function($scope, $location, Recipe, ingredients, tags, mealtimes) {
         $scope.recipe = new Recipe({
             "title":""
         });
+
+        $scope.ingredients = ingredients;
+        $scope.tags = tags;
+        $scope.mealtimes = mealtimes;
 
         $scope.save = function() {
             $scope.recipe.$save(function(recipe) {

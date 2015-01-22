@@ -1,7 +1,8 @@
 'use strict';
 
 var app = angular.module('cookbook',
-    ['ngRoute', 'cookbook.directives', 'recipe.services']);
+    ['ngRoute', 'cookbook.directives', 'recipe.services', 'ingredient.services',
+        'tag.services', 'mealtime.services']);
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
@@ -19,6 +20,17 @@ app.config(['$routeProvider', function($routeProvider) {
         })
         .when('/recipe/create', {
             controller: 'NewRecipeCtrl',
+            resolve: {
+                ingredients: ["MultiIngredientLoader", function(MultiIngredientLoader) {
+                    return MultiIngredientLoader();
+                }],
+                tags: ["MultiTagLoader", function(MultiTagLoader) {
+                    return MultiTagLoader();
+                }],
+                mealtimes: ["MultiMealTimeLoader", function(MultiMealTimeLoader) {
+                    return MultiMealTimeLoader();
+                }]
+            },
             templateUrl:'/cookbook/views/recipe/add.html'
         })
         .when('/recipe/:recipeId', {
