@@ -2,7 +2,7 @@
 
 var app = angular.module('cookbook',
     ['ngRoute', 'cookbook.directives', 'recipe.services', 'ingredient.services',
-        'tag.services', 'mealtime.services']);
+        'tag.services', 'mealtime.services', 'ui.bootstrap']);
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.

@@ -23,10 +23,34 @@ app.controller('NewRecipeCtrl', ['$scope', '$location', 'Recipe', 'ingredients',
         $scope.tags = tags;
         $scope.mealtimes = mealtimes;
 
+        $scope.selection = {
+            ids: {},
+            objects: []
+        };
+
         $scope.save = function() {
             $scope.recipe.$save(function(recipe) {
                 $location.path('/recipe/' + recipe.id);
             });
+        };
+
+        $scope.$watch(function() {
+            return $scope.selection.ids;
+        }, function(value) {
+            $scope.selection.objects = [];
+            angular.forEach($scope.selection.ids, function(v, k) {
+                v && $scope.selection.objects.push(getObjectById($scope.tags,k));
+            });
+        }, true);
+
+
+
+        function getObjectById (list, id) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].id == id) {
+                    return list[i];
+                }
+            }
         };
     }
 ]);

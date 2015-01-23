@@ -12,3 +12,11 @@ Add
         <div>{{tag.title}}</div>
     </li>
 </ul>
+
+<label ng-repeat="tag in tags">
+    <input type="checkbox" ng-model="selection.ids[tag.id]"> {{tag.title}}
+</label>
+
+<pre ng-bind="selection.objects | json"></pre>
+
+<input type="text" ng-model="selected" typeahead="ingredient.title for ingredient in ingredients | filter:$viewValue | limitTo:8">
