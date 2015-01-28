@@ -2,21 +2,23 @@ Add
 
 <input ng-model="recipe.title" class="input-xlarge" id="title">
 <button class="btn btn-primary" type="button" ng-click="save()">Save</button>
-
-<label ng-repeat="mealtime in mealtimes">
-    <input type="checkbox" ng-model="mealtime"/> {{mealtime.title}}
-</label>
-
-<ul>
-    <li ng-repeat="tag in tags">
-        <div>{{tag.title}}</div>
-    </li>
+<ul ng-repeat="addedIngredient in iselection.objects">
+    <li ng-click="removeIngredient(addedIngredient)">{{addedIngredient.title}}</li>
 </ul>
 
 <label ng-repeat="tag in tags">
-    <input type="checkbox" ng-model="selection.ids[tag.id]"> {{tag.title}}
+    <input type="checkbox" ng-model="tselection.ids[tag.id]"> {{tag.title}}
 </label>
 
-<pre ng-bind="selection.objects | json"></pre>
+<label ng-repeat="mealtime in mealtimes">
+    <input type="checkbox" ng-model="mselection.ids[mealtime.id]"> {{mealtime.title}}
+</label>
 
-<input type="text" ng-model="selected" typeahead="ingredient.title for ingredient in ingredients | filter:$viewValue | limitTo:8">
+<input ng-model="query" type="text">
+<ul ng-repeat="ingredient in ingredients | filter:query | orderBy: 'title' ">
+    <li ng-click="addIngredient(ingredient)">{{ingredient.title}}</li>
+</ul>
+
+
+<pre ng-bind="iselection | json"></pre>
+<pre ng-bind="recipe | json"></pre>
